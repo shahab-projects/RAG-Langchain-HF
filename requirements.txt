@@ -1,0 +1,15 @@
+langchain
+langchain-huggingface
+transformers
+sentence-transformers
+faiss-cpu
+mlflow
+sagemaker
+huggingface_hub
+boto3
+evaluate
+rouge_score 
+bert_score
+absl-py
+hf_xet
+unstructured

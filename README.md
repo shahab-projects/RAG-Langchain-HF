@@ -1,24 +1,43 @@
 # RAG Project
 
-This repository implements a Retrieval-Augmented Generation (RAG) pipeline using LangChain and Hugging Face.
+This repository implements a Retrieval-Augmented Generation (RAG) pipeline using **LangChain**, **Hugging Face**, and **FAISS**.
+
+## Overview
+We evaluate whether enriching a query with external documents improves the quality of generated answers compared to using the baseline language model alone.
+
+- **Baseline:** A decoder-only language model (`distilgpt2`) answers each question directly.  
+- **RAG:** The same questions are enriched with external documents retrieved via FAISS (using embeddings from `sentence-transformers/all-MiniLM-L6-v2`). These enriched queries are then passed to the same baseline model.  
+
+The outputs are compared against reference answers using **ROUGE** and **BERTScore**.
 
 ## Project Structure
-1. **Load QA dataset** — Reads a CSV file of questions and answers.
-2. **Load documents & build vectorstore** — Loads and chunks documents, then creates a FAISS index using HuggingFace embeddings.
-3. **Load LLM** — Loads the language model for generation.
-4. **Evaluate baseline** — Runs evaluation using the LLM only (no retrieval).
-5. **Evaluate RAG** — Runs evaluation using the RAG pipeline (retrieval + generation).
+1. **Load QA dataset** — A CSV file of question–answer pairs.  
+2. **Load external documents & build vectorstore** — Documents are chunked and embedded, then stored in a FAISS index.  
+3. **Load baseline LLM** — `distilgpt2` via Hugging Face.  
+4. **Evaluate baseline** — Generate answers using the questions only.  
+5. **Evaluate RAG** — Retrieve relevant documents, enrich the questions, then generate answers.  
+6. **Compare results** — Use ROUGE and BERTScore against ground-truth answers.
 
-## ROUGE Metric Note
-The ROUGE scores for our model appear low because the reference answers in our dataset contain **few tokens**. ROUGE calculates precision and recall based on the overlap between generated tokens and reference tokens. Since our generated answers are typically **longer than the reference answers**, the overlap proportion decreases, leading to **smaller ROUGE values**.
+## Evaluation Metrics
+- **ROUGE**: Measures token overlap between generated and reference answers.  
+  - In our dataset, reference answers are short, while generated answers are longer. This mismatch penalizes ROUGE scores for RAG answers even when they contain more relevant information.  
+  - Thus, higher ROUGE is often seen for **baseline answers**.
 
-This does **not necessarily indicate poor quality answers** — it is simply a limitation of using ROUGE with short reference answers.
+- **BERTScore**: Uses contextual embeddings to measure semantic similarity.  
+  - Here, **RAG answers** generally score higher, reflecting that they capture more meaning and align better with the reference answers, despite being longer or phrased differently.
+
+👉 Together, ROUGE and BERTScore highlight the tradeoff: lexical overlap vs semantic similarity.
+
+## Results Summary
+| Metric      | Baseline (LLM only) | RAG (LLM + Retrieval) |
+|-------------|----------------------|------------------------|
+| **ROUGE**   | Higher on average    | Lower (due to long answers vs short references) |
+| **BERTScore** | Lower               | Higher (better semantic alignment) |
+
+These results suggest that RAG enriches the answers semantically, but simple lexical metrics like ROUGE may not fully capture that improvement.
 
 ## Demo
-To see the demo results for this project, run:
+To reproduce and see the evaluation results, run:
 
 ```bash
 jupyter notebook notebooks/03_evaluation.ipynb
-```
-
-This will execute the evaluation pipeline and display performance metrics.

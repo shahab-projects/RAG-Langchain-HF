@@ -28,6 +28,13 @@ The outputs are compared against reference answers using **ROUGE** and **BERTSco
 
 👉 Together, ROUGE and BERTScore highlight the tradeoff: lexical overlap vs semantic similarity.
 
+## Evaluation Results
+
+| Metric      | Baseline (LLM only) | RAG (LLM + Retrieval) |
+|------------|--------------------|----------------------|
+| ROUGE      | 0.42               | 0.38                 |
+| BERTScore  | 0.75               | 0.82                 |
+
 ## Results Summary
 | Metric       | Baseline (LLM only) | RAG (LLM + Retrieval) |
 |--------------|----------------------|------------------------|
@@ -60,3 +67,4 @@ docker build -t rag-demo .
 ```bash
 docker run --rm rag-demo
 ```
+

@@ -29,15 +29,34 @@ The outputs are compared against reference answers using **ROUGE** and **BERTSco
 👉 Together, ROUGE and BERTScore highlight the tradeoff: lexical overlap vs semantic similarity.
 
 ## Results Summary
-| Metric      | Baseline (LLM only) | RAG (LLM + Retrieval) |
-|-------------|----------------------|------------------------|
-| **ROUGE**   | Higher on average    | Lower (due to long answers vs short references) |
-| **BERTScore** | Lower               | Higher (better semantic alignment) |
+| Metric       | Baseline (LLM only) | RAG (LLM + Retrieval) |
+|--------------|----------------------|------------------------|
+| **ROUGE**    | Higher on average    | Lower (due to long answers vs short references) |
+| **BERTScore** | Lower                | Higher (better semantic alignment) |
 
 These results suggest that RAG enriches the answers semantically, but simple lexical metrics like ROUGE may not fully capture that improvement.
 
 ## Demo
-To reproduce and see the evaluation results, run:
+
+### Run via Jupyter
+You can reproduce the evaluation in notebooks:
 
 ```bash
 jupyter notebook notebooks/03_evaluation.ipynb
+```
+
+## Run with Docker
+You can run this project inside a Docker container without installing dependencies locally.
+
+### Build the image:
+docker build -t rag-demo .
+
+```bash
+docker build -t rag-demo .
+```
+
+### Run the pipeline:
+
+```bash
+docker run --rm rag-demo
+```

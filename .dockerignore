@@ -1,0 +1,22 @@
+# Ignore Python cache and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info
+*.egg
+*.log
+
+# Ignore notebooks and local data (not needed inside container)
+notebooks/
+
+# Ignore virtual environments
+.env
+.venv
+env/
+venv/
+
+# Ignore git files
+.git
+.gitignore

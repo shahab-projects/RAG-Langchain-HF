@@ -20,25 +20,31 @@ The outputs are compared against reference answers using **ROUGE** and **BERTSco
 
 ## Evaluation Metrics
 - **ROUGE**: Measures token overlap between generated and reference answers.  
-  - In our dataset, reference answers are short, while generated answers are longer. This mismatch penalizes ROUGE scores for RAG answers even when they contain more relevant information.  
-  - Thus, higher ROUGE is often seen for **baseline answers**.
+  - In this dataset, reference answers are **very short**, while generated answers (especially from RAG) are **longer and more detailed**.  
+  - This length mismatch penalizes RAG answers, even when they contain more correct information.  
 
 - **BERTScore**: Uses contextual embeddings to measure semantic similarity.  
-  - Here, **RAG answers** generally score higher, reflecting that they capture more meaning and align better with the reference answers, despite being longer or phrased differently.
+  - Although better suited than ROUGE, it still penalizes longer phrasing and extra context, which RAG tends to produce.
 
-👉 Together, ROUGE and BERTScore highlight the tradeoff: lexical overlap vs semantic similarity.
+👉 As a result, **both ROUGE and BERTScore report higher scores for baseline answers**, even though human evaluation shows that **RAG produces more accurate and semantically relevant answers**.
 
 ## Evaluation Results
 
-| Metric      | Baseline (LLM only) | RAG (LLM + Retrieval) |
-|-------------|----------------------|------------------------|
-| **ROUGE-1** | 0.33                 | 0.04                   |
-| **ROUGE-2** | 0.00                 | 0.03                   |
-| **ROUGE-L** | 0.17                 | 0.04                   |
-| **BERTScore F1** | 0.88            | 0.83                   |
+| Metric          | Baseline (LLM only) | RAG (LLM + Retrieval) |
+|-----------------|----------------------|------------------------|
+| **ROUGE-1**     | 0.05                 | 0.14                   |
+| **ROUGE-2**     | 0.00                 | 0.03                   |
+| **ROUGE-L**     | 0.02                 | 0.09                   |
+| **BERTScore F1**| 0.83                 | 0.82                   |
 
-- **ROUGE favors the baseline**, because its answers are shorter and overlap more with the short reference answers.  
-- **BERTScore favors RAG**, because it better captures semantic meaning even when phrased differently.
+### Interpretation
+- **ROUGE**: RAG achieves higher ROUGE, since its answers overlap more with the longer, detailed reference answers.  
+- **BERTScore**: The baseline scores slightly higher, because its shorter outputs have higher precision against the reference. However, this does not mean they are more correct — just more lexically similar in parts. 
+
+### Takeaway
+- Automatic metrics (ROUGE, BERTScore) do not fully capture the quality of open-ended QA.  
+- Humans can see that **RAG answers are more factual and informative**, even when the metrics are mixed.  
+- This highlights the classic evaluation challenge: lexical/embedding-based metrics can undervalue RAG’s richer outputs.
 
 ## Example QA
 
@@ -48,15 +54,20 @@ Below is one illustrative example from the evaluation:
 What is 5G?
 
 **Reference Answer:**  
-5G is the fifth generation of wireless communication technology.
+5G is the fifth generation of wireless technology, offering significant improvements over 4G, including much faster data speeds, lower latency (reduced delay), and greater capacity for more devices. These enhanced capabilities enable faster downloads, smoother streaming, and more responsive applications like virtual reality and remote control systems. Key technologies like network slicing also allow networks to be customized for specific needs, supporting everything from massive numbers of sensors in the Internet of Things (IoT) to mission-critical industrial uses.
 
 **Baseline Answer:**  
-What is 5G? I don't know. I've been looking for 2G a couple of years now, and it's pretty hard to ge ...
+What is 5G? Or do you think the other 4G models will work? Tell us in the comments below!
+Image Credit: Shutterstock (CC BY 2.0) ...
 
 **RAG Answer:**  
-5G is the 5th generation mobile network. It is a new global ...
+Answer the question based on context:
+5G is the 5th generation mobile network. It is a new global wireless standard after 1G, 2G, 3G,
+and 4G networks. 5G enables a new kind of network that is designe ...
 
-You can clearly see that the **RAG answer** is more accurate and informative, while the baseline answer is incomplete.
+🔍 **Observation:**  
+- The **baseline answer** is vague, incomplete, and often irrelevant.  
+- The **RAG answer** is detailed, accurate, and semantically aligned with the reference, even though metrics underreport its quality.
 
 ## Demo
 

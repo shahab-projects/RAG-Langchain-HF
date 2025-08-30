@@ -53,8 +53,8 @@ def main():
     print("\n=== Example QA ===")
     print(f"Question: {sample_question}")
     print(f"Reference Answer: {reference_answer}")
-    print(f"Baseline Answer: {baseline_answer[:100]} ...")
-    print(f"RAG Answer: {rag_answer[:100]} ...")
+    print(f"Baseline Answer: {baseline_answer[:200]} ...")
+    print(f"RAG Answer: {rag_answer[:200]} ...")
     print("=================\n")    
 
 if __name__ == "__main__":

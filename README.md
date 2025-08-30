@@ -31,17 +31,32 @@ The outputs are compared against reference answers using **ROUGE** and **BERTSco
 ## Evaluation Results
 
 | Metric      | Baseline (LLM only) | RAG (LLM + Retrieval) |
-|------------|--------------------|----------------------|
-| ROUGE      | 0.42               | 0.38                 |
-| BERTScore  | 0.75               | 0.82                 |
+|-------------|----------------------|------------------------|
+| **ROUGE-1** | 0.33                 | 0.04                   |
+| **ROUGE-2** | 0.00                 | 0.03                   |
+| **ROUGE-L** | 0.17                 | 0.04                   |
+| **BERTScore F1** | 0.88            | 0.83                   |
 
-## Results Summary
-| Metric       | Baseline (LLM only) | RAG (LLM + Retrieval) |
-|--------------|----------------------|------------------------|
-| **ROUGE**    | Higher on average    | Lower (due to long answers vs short references) |
-| **BERTScore** | Lower                | Higher (better semantic alignment) |
+- **ROUGE favors the baseline**, because its answers are shorter and overlap more with the short reference answers.  
+- **BERTScore favors RAG**, because it better captures semantic meaning even when phrased differently.
 
-These results suggest that RAG enriches the answers semantically, but simple lexical metrics like ROUGE may not fully capture that improvement.
+## Example QA
+
+Below is one illustrative example from the evaluation:
+
+**Question:**  
+What is 5G?
+
+**Reference Answer:**  
+5G is the fifth generation of wireless communication technology.
+
+**Baseline Answer:**  
+What is 5G? I don't know. I've been looking for 2G a couple of years now, and it's pretty hard to ge ...
+
+**RAG Answer:**  
+5G is the 5th generation mobile network. It is a new global ...
+
+You can clearly see that the **RAG answer** is more accurate and informative, while the baseline answer is incomplete.
 
 ## Demo
 
@@ -52,19 +67,15 @@ You can reproduce the evaluation in notebooks:
 jupyter notebook notebooks/03_evaluation.ipynb
 ```
 
-## Run with Docker
+### Run with Docker
 You can run this project inside a Docker container without installing dependencies locally.
 
-### Build the image:
-docker build -t rag-demo .
-
+#### Build the image:
 ```bash
 docker build -t rag-demo .
 ```
 
-### Run the pipeline:
-
+#### Run the pipeline:
 ```bash
 docker run --rm rag-demo
 ```
-

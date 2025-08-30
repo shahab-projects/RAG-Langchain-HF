@@ -17,13 +17,13 @@ def main():
 
     # 3. Load LLM
     llm = generator.load_generator()
-
-    # Test single query generation to see output
-    sample_query = "What is 5G?"
-    sample_context = vectorstore.similarity_search(sample_query, k=3)
-    answer = generator.generate_answer(llm, sample_query, sample_context)
-    print("\nSample Query:", sample_query)
-    print("Sample generated answer:", answer)
+    
+    # # Test single query generation to see output
+    # sample_query = "What is 5G?"
+    # sample_context = vectorstore.similarity_search(sample_query, k=3)
+    # answer = generator.generate_answer(llm, sample_query, sample_context)
+    # print("\nSample Query:", sample_query)
+    # print("Sample generated answer:", answer)
 
     # 4. Evaluate baseline (LLM only)
     baseline_scores = evaluation.evaluate_model(questions, answers, llm)
@@ -35,6 +35,27 @@ def main():
     print("\n--- Evaluation Results ---")
     print("Baseline Example Score:", baseline_scores[0])
     print("RAG Example Score:", rag_scores[0])
+    
+    # 7. Showing sample answers from both models
+
+    # Pick one question from your dataset
+    sample_question = questions[0]
+    # print('sample_question', sample_question)
+    reference_answer = answers[0]
+
+    # Baseline answer
+    baseline_answer = generator.generate_answer(llm, sample_question)
+
+    # RAG answer
+    retrieved_docs = retrieval.retrieve_similar_docs(vectorstore, sample_question)
+    rag_answer = generator.generate_answer(llm, sample_question, retrieved_docs)
+
+    print("\n=== Example QA ===")
+    print(f"Question: {sample_question}")
+    print(f"Reference Answer: {reference_answer}")
+    print(f"Baseline Answer: {baseline_answer[:100]} ...")
+    print(f"RAG Answer: {rag_answer[:100]} ...")
+    print("=================\n")    
 
 if __name__ == "__main__":
     main()

@@ -11,7 +11,10 @@ def load_generator():
     )
     return HuggingFacePipeline(pipeline=pipe)
 
-def generate_answer(llm, query, context):
-    context_str = "\n".join([doc.page_content for doc in context])
-    prompt = f"Answer the question based on context:\n{context_str}\n\nQuestion: {query}"
+def generate_answer(llm, query, context=None):
+    if context != None:
+        context_str = "\n".join([doc.page_content for doc in context])
+        prompt = f"Answer the question based on context:\n{context_str}\n\nQuestion: {query}"
+    else:
+        prompt = query
     return llm.invoke(prompt)

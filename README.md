@@ -90,3 +90,33 @@ docker build -t rag-demo .
 ```bash
 docker run --rm rag-demo
 ```
+
+## Future Work & Deployment
+
+This project is containerized with Docker, making it portable and ready for deployment in production environments.  
+While the current version runs locally, the following deployment paths can be taken:
+
+### 1. Deploying on AWS SageMaker (Production-Ready)
+- **Push image to Amazon ECR** (Elastic Container Registry).
+- **Create a SageMaker model** that points to the ECR image.
+- **Deploy as a SageMaker Endpoint** to serve predictions via a REST API.
+- This setup enables scalable inference, monitoring, and integration with other AWS services.
+
+> Note: An AWS account is required to perform this step. For this project, we only demonstrate containerization and outline the deployment path.
+
+### 2. Sharing via DockerHub
+- The image can be pushed to DockerHub for easier sharing:
+```bash
+docker tag rag-demo <your-dockerhub-username>/rag-demo
+docker push <your-dockerhub-username>/rag-demo
+```
+
+Anyone can then run the project with:
+```bash
+docker pull <your-dockerhub-username>/rag-demo
+docker run -p 8080:8080 <your-dockerhub-username>/rag-demo
+```
+
+### 3. Other Deployment Options
+- Kubernetes / EKS – Run the container as part of a larger microservice system.
+- Local REST API – Expose the pipeline via FastAPI/Flask inside the container.

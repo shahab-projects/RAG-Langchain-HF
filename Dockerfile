@@ -19,7 +19,7 @@ COPY . .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port (if you later add an API)
+# Expose port (if we later add an API)
 EXPOSE 8080
 
 # Default command to run pipeline

@@ -16,3 +16,5 @@ absl-py
 hf_xet
 unstructured
 pandas
+fastapi
+uvicorn

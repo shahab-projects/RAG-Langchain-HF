@@ -16,7 +16,7 @@ The outputs are compared against reference answers using **ROUGE** and **BERTSco
 3. **Load baseline LLM** — `distilgpt2` via Hugging Face.  
 4. **Evaluate baseline** — Generate answers using the questions only.  
 5. **Evaluate RAG** — Retrieve relevant documents, enrich the questions, then generate answers.  
-6. **Compare results** — Use ROUGE and BERTScore against ground-truth answers.
+6. **Compare results** — ROUGE and BERTScore metrics against ground-truth answers.
 
 ## Evaluation Metrics
 - **ROUGE**: Measures token overlap between generated and reference answers.  
@@ -78,7 +78,7 @@ You can reproduce the evaluation in notebooks:
 jupyter notebook notebooks/03_evaluation.ipynb
 ```
 
-### Run with Docker
+### Run via Docker
 You can run this project inside a Docker container without installing dependencies locally.
 
 #### Build the image:
@@ -93,12 +93,6 @@ docker run --rm rag-demo
 
 ## API / FastAPI
 
-### How to test via:
-
-- Browser: ```bash http://127.0.0.1:8000/docs ```
-- Python script (```bash test.py ```)
-- curl
-
 ### Example response
 ```bash
 {
@@ -106,26 +100,42 @@ docker run --rm rag-demo
 }
 ```
 
-#### Run with FastAPI
+### Run via FastAPI
+#### Local Server
 ```bash
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Run with Docker
+#### Test API via Python:
+```bash
+python test.py
+```
+
+#### Test API via browser:
+- Open ```bash http://127.0.0.1:8000/docs ``` for Swagger UI.
+
+#### Test API via curl:
+```bash
+curl -X POST "http://127.0.0.1:8000/rag" -H "Content-Type: application/json" -d '{"question":"What is 5G?"}'
+```
+
+### Run FastAPI automatically with Docker
 For **running the FastAPI Server automatically** on docker run, replace the command line in the Docker File with:
 ```bash
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-- This way, you can run:
+This way, you can run:
 ```bash
 docker build -t rag-demo .
 docker run --rm -p 8000:8000 rag-demo
 ```
 
+- API ready on ```bash http://127.0.0.1:8000. ```
+
 ## Future Work & Deployment
 
-This project is containerized with Docker, making it portable and ready for deployment in production environments.  
+This project is **containerized with Docker**, making it portable and ready for deployment in production environments.  
 While the current version runs locally, the following deployment paths can be taken:
 
 ### 1. Deploying on AWS SageMaker (Production-Ready)
@@ -143,7 +153,7 @@ docker tag rag-demo <your-dockerhub-username>/rag-demo
 docker push <your-dockerhub-username>/rag-demo
 ```
 
-Anyone can then run the project with:
+- Anyone can then run the project with:
 ```bash
 docker pull <your-dockerhub-username>/rag-demo
 docker run -p 8080:8080 <your-dockerhub-username>/rag-demo

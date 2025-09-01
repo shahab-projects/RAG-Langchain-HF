@@ -78,6 +78,12 @@ You can reproduce the evaluation in notebooks:
 jupyter notebook notebooks/03_evaluation.ipynb
 ```
 
+Or 
+
+```bash
+python main.py
+```
+
 ### Run via Docker
 You can run this project inside a Docker container without installing dependencies locally.
 

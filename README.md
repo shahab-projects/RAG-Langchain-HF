@@ -144,7 +144,7 @@ docker run --rm -p 8000:8000 rag-demo
 This project is **containerized with Docker**, making it portable and ready for deployment in production environments.  
 While the current version runs locally, the following deployment paths can be taken:
 
-### 1. Deploying on AWS SageMaker (Production-Ready)
+### 1. Deploying on AWS SageMaker (containerized and structured for future deployment)
 - **Push image to Amazon ECR** (Elastic Container Registry).
 - **Create a SageMaker model** that points to the ECR image.
 - **Deploy as a SageMaker Endpoint** to serve predictions via a REST API.
